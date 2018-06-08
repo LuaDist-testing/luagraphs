@@ -1,16 +1,16 @@
 -- This file was automatically generated for the LuaDist project.
 
 package = "luagraphs"
-version = "1.0-2"
+version = "1.0-3"
 -- LuaDist source
 source = {
-  tag = "1.0-2",
+  tag = "1.0-3",
   url = "git://github.com/LuaDist-testing/luagraphs.git"
 }
 -- Original source
 -- source = {
 --    url = "git://github.com/chen0040/lua-graph.git",
---    tag = "v1.0.2",
+--    tag = "v1.0.3",
 -- }
 description = {
    summary = "Lua Graph Algorithms Library",

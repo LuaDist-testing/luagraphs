@@ -23,15 +23,15 @@ function EagerPrimMST:run(G)
     self.path = require('data.list').create()
     self.marked = {}
 
-    local V = G.V
-    for v = 0, V-1 do
+    for i = 0, G:vertexCount()-1 do
+        local v = G:vertexAt(i)
         self.marked[v] = false
     end
 
     local pq = require('data.IndexedMinPQ').create(function(e1, e2) return e1.weight - e2.weight end)
     self:visit(G, 0, pq)
 
-    while self.path:size() < V -1 and pq:isEmpty() == false do
+    while self.path:size() < G:vertexCount() -1 and pq:isEmpty() == false do
         local w = pq:minIndex()
         local e = pq:delMin()
         self.path:add(e)
