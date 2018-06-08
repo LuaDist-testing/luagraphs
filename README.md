@@ -21,9 +21,9 @@ The graph algorithms covered:
 
 # Notes
 
-For developers who have been library 1.0.2, the main changes are:
+For developers who have been using library 1.0.2, the main changes are:
   
-* graph.V is removed and replaced with graph:vertexCount() and graph:vertexAt(index) method for iterating all vertices: this change was introduced so that graph vertices do not need to start with vertex 0 and do not need to be consecutive.
+* graph.V is removed and replaced with graph:vertexCount() and graph:vertexAt(index) method for iterating all vertices: this change was introduced so that graph vertices do not need to start with vertex 0 and do not need to be consecutive integer (can be any label).
 * graph:addVertexIfNotExists: allows user to add vertices later after the graph is created
 * graph:removeVertex: allows user to delete a vertex and its edges
 * graph:addEdge: Now if the vertices on which the edge is to be added does not exists in the graph, they will be automatically added
@@ -276,7 +276,8 @@ local bfs = require('luagraphs.search.BreadthFirstSearch').create()
 local s = 0
 bfs:run(g, s)
 
-for v = 0, g:vertexCount()-1 do
+for k = 0, g:vertexCount()-1 do
+    local v = g:vertexAt(k)
     if v ~= s and bfs:hasPathTo(v) then
         local path = bfs:getPathTo(v)
         local pathText = ''
@@ -312,12 +313,13 @@ g:addEdge(7, 8)
 g:addEdge(9, 11)
 g:addEdge(5, 3)
 
-local cc = require('connectivity.ConnectedComponents').create()
+local cc = require('luagraphs.connectivity.ConnectedComponents').create()
 cc:run(g)
 
 print('count: ' .. cc.count)
 print(cc.count) -- return 3 connected components
-for v = 0,g:vertexCount()-1 do
+for k = 0,g:vertexCount()-1 do
+    local v = g:vertexAt(k)
     print('id[' .. v .. ']: ' .. cc:component(v))
 end
 ```
@@ -349,11 +351,12 @@ graph:addEdge(6, 4)
 graph:addEdge(6, 9)
 graph:addEdge(7, 6)
 
-local scc = require('connectivity.StronglyConnectedComponents').create()
+local scc = require('luagraphs.connectivity.StronglyConnectedComponents').create()
 scc:run(graph)
 print(scc.count) -- return 5 components
 
-for v = 0,graph:vertexCount()-1 do
+for k = 0,graph:vertexCount()-1 do
+    local v = graph:vertexAt(k)
     print('id[' .. v .. ']: ' .. scc:component(v))
 end
 ```
@@ -505,10 +508,12 @@ g:addEdge(5, 6, 13.0)
 g:addEdge(7, 5, 6.0)
 g:addEdge(7, 2, 7.0)
 
+local source = 0
 local dijkstra = require('luagraphs.shortest_paths.Dijkstra').create()
-dijkstra:run(g, 0) -- 0 is the source node in the path search
-for v = 1,g:vertexCount()-1 do
-    if dijkstra:hasPathTo(v) then
+dijkstra:run(g, source) -- 0 is the id of the source node in the path search
+for k = 0,g:vertexCount()-1 do
+    local v = g:vertexAt(k)
+    if v ~= source and dijkstra:hasPathTo(v) then
         print('path from 0 to ' .. v .. ' ( cost: '  .. dijkstra:getPathLength(v) .. ' )')
         local path = dijkstra:getPathTo(v)
         for i = 0,path:size()-1 do
@@ -540,10 +545,12 @@ g:addEdge(5, 6, 13.0)
 g:addEdge(7, 5, 6.0)
 g:addEdge(7, 2, 7.0)
 
+local source = 0
 local finder = require('luagraphs.shortest_paths.Dijkstra').create()
-finder:run(g, 0) -- 0 is the source node in the path search
-for v = 1,g:vertexCount()-1 do
-    if finder:hasPathTo(v) then
+finder:run(g, source) -- 0 is the source node in the path search
+for k = 0,g:vertexCount()-1 do
+    local v= g:vertexAt(k)
+    if v ~= source and finder:hasPathTo(v) then
         print('path from 0 to ' .. v .. ' ( cost: '  .. finder:getPathLength(v) .. ' )')
         local path = finder:getPathTo(v)
         for i = 0,path:size()-1 do
